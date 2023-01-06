@@ -1,10 +1,10 @@
 # Project Title
 
-Simple overview of use/purpose.
+Weather App
 
 ## Description
 
-An in-depth paragraph about your project and overview of use.
+A weather app that uses HTML Geolocation API to acquire user location and send request to openweathermap API to retrieve weather data. Built using Django, HTML, CSS, JavaScript. 
 
 ## Getting Started
 
@@ -60,3 +60,4 @@ Inspiration, code snippets, etc.
 * [dbader](https://github.com/dbader/readme-template)
 * [zenorocha](https://gist.github.com/zenorocha/4526327)
 * [fvcproductions](https://gist.github.com/fvcproductions/1bfc2d4aecb01a834b46)
+
