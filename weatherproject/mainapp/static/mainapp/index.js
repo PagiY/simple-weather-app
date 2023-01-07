@@ -10,10 +10,17 @@ window.addEventListener('DOMContentLoaded', (event) => {
             console.log(result.state)
 
             if(result.state === "granted"){
-                navigator.geolocation.getCurrentPosition(getPosition)
+                
+                navigator.geolocation.getCurrentPosition(getPos)
+                    
             }
             else if(result.state === "prompt"){
-                console.log(result.state)
+                //TODO: What to do if permission is on "prompt"
+                console.log("Please enable geolocation.")
+            }
+            else{
+                //TODO: What to do if permission is on "denied"
+                console.log("Geolocation denied. :(")
             }
    
         });
@@ -27,42 +34,90 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
 
 function getCookie(cname) {
+
     let name = cname + "=";
+    
     let decodedCookie = decodeURIComponent(document.cookie);
+    
     let ca = decodedCookie.split(';');
+    
     for(let i = 0; i <ca.length; i++) {
+
+      
       let c = ca[i];
+      
       while (c.charAt(0) == ' ') {
         c = c.substring(1);
       }
+
       if (c.indexOf(name) == 0) {
         return c.substring(name.length, c.length);
       }
+
     }
+
     return "";
 }
 
-function getPosition(position){
 
+async function getPos(position){
+    //Fetch weather data 
     console.log("Getting location data")
-
+                
     let locData = {
-        latitude: position.coords.latitude,
-        longitude: position.coords.longitude
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude
     }
-
-    fetch('',
-    {
+                
+    const settings = {
         method: "POST",
         headers: {
             "X-CSRFToken": getCookie("csrftoken")
         },
-        credentials: "same-origin",
-        body: JSON.stringify(locData)
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log(data)
-    })
+            credentials: "same-origin",
+             body: JSON.stringify(locData)
+        }
+                    
+        let promise = await fetch('', settings)
+                        
+        if(promise.status == 200){
+            let results = await promise.json()
+                    
+            console.log("Successfully Get Weather Data:")
+            
+            updatePage(results)
+            
+        }
+        else{
+            //TODO: add error page
+        }
 }
+
+function updatePage(results){
+    
+    console.log(results)
+
+    //hide the permission div
+    document.getElementById('permission').setAttribute("class", "hidden");
+    
+    //get the main-content div
+    let mainContent = document.getElementById('main-content');
+
+    //remove the hidden attribute
+    mainContent.removeAttribute("class", "hidden");
+    
+    let content = document.getElementById('content');
+
+    //dynamically create elements:
+    let weather = document.createElement('h1');
+    weather.appendChild(document.createTextNode(results.weather_params))
+    weather.setAttribute('id', 'weather')
+    content.appendChild(weather);
+
+    let weatherDesc = document.createElement('h2');
+    weatherDesc.appendChild(document.createTextNode(results.weather_desc));
+    content.appendChild(weatherDesc);
+
+}
+
 
