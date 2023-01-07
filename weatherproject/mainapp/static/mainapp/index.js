@@ -109,14 +109,35 @@ function updatePage(results){
     let content = document.getElementById('content');
 
     //dynamically create elements:
-    let weather = document.createElement('h1');
-    weather.appendChild(document.createTextNode(results.weather_params))
-    weather.setAttribute('id', 'weather')
-    content.appendChild(weather);
+    dynamicElement('h1', {'id':'weather'}, document.createTextNode(results.weather_params), content)
+    dynamicElement('h2', null, document.createTextNode(results.weather_desc), content)
+    dynamicElement('img', {'src': results.icon_url}, null, weather)
 
-    let weatherDesc = document.createElement('h2');
-    weatherDesc.appendChild(document.createTextNode(results.weather_desc));
-    content.appendChild(weatherDesc);
+    let weatherDetails = dynamicElement('div', {'id':'weather-details'}, null, content)
+    dynamicElement('h3', null,  document.createTextNode(results.humidity), weatherDetails);
+    dynamicElement('h3', null, document.createTextNode(results.temperature), weatherDetails);
+    
+}  
+
+function dynamicElement(element, attributes, appendWithin, appendTo){
+    let elem = document.createElement(element);
+
+    if(attributes){
+        let attribute = Object.keys(attributes);
+        let values    = Object.values(attributes);
+        
+        attribute.forEach((attr, i) => {
+            elem.setAttribute(attr, values[i])
+        })
+    }
+
+    if(appendWithin){
+        elem.appendChild(appendWithin);
+    }
+
+    appendTo.appendChild(elem);
+
+    return elem; 
 
 }
 
