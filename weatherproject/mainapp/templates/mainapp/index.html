@@ -1,0 +1,30 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{%block title%} Weather App {%endblock%}</title>
+        <link rel = "stylesheet" href = "{% static 'mainapp/styles.css' %}">
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+        <script src = "{% static 'mainapp/index.js' %}"></script>
+
+    </head>
+    <body>
+        <div id = "container" class = "bg">
+            
+            <div id = "permission">
+                <p>requesting permission...</p> 
+            </div>
+
+            <div id = "main-content" class = "hidden">
+                <div id = "content">
+
+                </div>
+            </div>
+
+        </div>
+        
+    </body>
+</html>
