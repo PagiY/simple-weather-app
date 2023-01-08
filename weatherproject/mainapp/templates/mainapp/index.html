@@ -8,22 +8,28 @@
 
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
         <script src = "{% static 'mainapp/index.js' %}"></script>
 
     </head>
     <body>
+        
         <div id = "container" class = "bg">
-            
-            <div id = "permission">
-                <p>requesting permission...</p> 
-            </div>
-
-            <div id = "main-content" class = "hidden">
-                <div id = "content">
-
+            {%block body%}    
+                <div id = "permission">
+                    <p>Checking permissions...</p> 
                 </div>
-            </div>
 
+                <div id = "main-content" class = "hidden">
+                    <div id = "content">
+                    </div>
+                </div>
+                
+                <div id = "denied" class = "hidden">
+                    <p>Please enable geolocation and refresh the page or click the button below:</p>
+                    <button id = "retry-button">Refresh page</button>
+                </div>
+            {%endblock%}
         </div>
         
     </body>

@@ -14,13 +14,10 @@ window.addEventListener('DOMContentLoaded', (event) => {
                 navigator.geolocation.getCurrentPosition(getPos)
                     
             }
-            else if(result.state === "prompt"){
-                //TODO: What to do if permission is on "prompt"
-                console.log("Please enable geolocation.")
-            }
             else{
                 //TODO: What to do if permission is on "denied"
                 console.log("Geolocation denied. :(")
+                deniedPage();
             }
    
         });
@@ -100,6 +97,9 @@ function updatePage(results){
     //hide the permission div
     document.getElementById('permission').setAttribute("class", "hidden");
     
+    
+    //add new bg
+    document.getElementById("container").style.backgroundImage = `url(${results.bg})`
     //get the main-content div
     let mainContent = document.getElementById('main-content');
 
@@ -110,13 +110,33 @@ function updatePage(results){
 
     //dynamically create elements:
     dynamicElement('h1', {'id':'weather'}, document.createTextNode(results.weather_params), content)
-    dynamicElement('h2', null, document.createTextNode(results.weather_desc), content)
+    dynamicElement('h2', null, document.createTextNode(`${results.weather_desc} in ${results.location}`), content)
     dynamicElement('img', {'src': results.icon_url}, null, weather)
 
+    //weather details such as humidity 
     let weatherDetails = dynamicElement('div', {'id':'weather-details'}, null, content)
+    dynamicElement('span', {'class': 'weather-details-icon material-symbols-outlined'}, document.createTextNode("humidity_percentage"), weatherDetails)
     dynamicElement('h3', null,  document.createTextNode(results.humidity), weatherDetails);
+    dynamicElement('span', {'class': 'weather-details-icon material-symbols-outlined'}, document.createTextNode("device_thermostat"), weatherDetails)
     dynamicElement('h3', null, document.createTextNode(results.temperature), weatherDetails);
     
+    let forecasts = dynamicElement('div', {'id': 'forecasts'}, null, content)
+    dynamicElement('p', null, document.createTextNode("Forecast in the next hours..."), forecasts)
+
+    let fc_results = results.forecasts 
+    let forecastsContent = dynamicElement('ul', {'id':'forecasts-content'}, null, forecasts)
+    
+    fc_results.forEach((fc) => {
+        let fc_container = dynamicElement('li', {'class': 'forecast'}, null, forecastsContent)
+
+        let fc_weather = dynamicElement('p', {'class': 'forecast-weather'}, document.createTextNode(fc.weather), fc_container)
+        dynamicElement('img', {'src': fc.icon}, null, fc_weather)
+        dynamicElement('p', null, document.createTextNode(fc.weather_desc), fc_container)
+        dynamicElement('p', null, document.createTextNode(fc.date), fc_container)
+        dynamicElement('p', null, document.createTextNode(fc.time), fc_container)
+    })
+    
+
 }  
 
 function dynamicElement(element, attributes, appendWithin, appendTo){
@@ -139,6 +159,17 @@ function dynamicElement(element, attributes, appendWithin, appendTo){
 
     return elem; 
 
+}
+
+function deniedPage(){
+    document.getElementById('permission').setAttribute("class", "hidden");
+    document.getElementById('denied').removeAttribute("class", "hidden");
+    
+    let tryBtn = document.getElementById("retry-button");
+
+    tryBtn.addEventListener('click', ()=>{
+        window.location.reload();
+    })
 }
 
 
