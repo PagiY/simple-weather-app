@@ -26,6 +26,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(find_dotenv())
 SECRET_KEY = os.environ["SECRET_KEY"]
 
+API_KEY = os.environ["API_KEY"]
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -120,3 +122,4 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
